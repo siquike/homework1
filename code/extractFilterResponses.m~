@@ -1,4 +1,4 @@
-function [filter_Response] = extractFilterResponses(I, filterBank)
+function [filte_Response] = extractFilterResponses(I, filterBank)
 % CV Fall 2015 - Provided Code
 % Extract the filter responses given the image and filter bank
 % Pleae make sure the output format is unchanged. 
@@ -17,7 +17,7 @@ pixelCount = size(doubleI,1)*size(doubleI,2);
 
 %filterResponses:    a W*H x N*3 matrix of filter responses
 Ifilt = cell(length(filterBank), 1);
-filter_Response = zeros(pixelCount, totalResponses);
+filte_Response = zeros(pixelCount, totalResponses);
 
 
 
@@ -44,7 +44,7 @@ for i = 1:length(Ifilt)
     Ifilt{i,1} = gather(temp{i,1}(:,:));
 end 
 
-filter_Response = cell2mat(Ifilt);
+filte_Response = cell2mat(Ifilt);
 
 % filterResponses = gather(filterResponses);
 % for i = 1:length(Ifilt)
