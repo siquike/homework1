@@ -23,6 +23,7 @@ filterResponses = zeros(pixelCount, length(filterBank)*3);
 
 % === fill in your implementation here  ===
 
+I1 = imfilter(sun,filterBank{1,1});
 
-
+% A = convmtx(h,n)
 end

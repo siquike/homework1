@@ -1,0 +1,1 @@
+[IC] = convolution(I,filter)
