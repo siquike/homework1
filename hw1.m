@@ -10,8 +10,12 @@
 %% Q1.1
 
 filterBank = createFilterBank(); 
-I1= gpuArray(imread('sun_aerinlrdodkqnypz.jpg'));
+I1= imread('sun_aerinlrdodkqnypz.jpg');
+% I1= gpuArray(imread('sun_aerinlrdodkqnypz.jpg'));
 I1 = im2double(I1);
-% image(I1)
+
+%%
+I1fil = fft(I1);
+plot(I1fil)
 [filteres] = extractFilterResponses(I1, filterBank);
 % image(filteres)
