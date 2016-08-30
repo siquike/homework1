@@ -22,8 +22,18 @@ filterResponses = zeros(pixelCount, length(filterBank)*3);
 %for each filter and channel, apply the filter, and vectorize
 
 % === fill in your implementation here  ===
+Ilab(:,:,1) = L;
+Ilab(:,:,2) = a;
+Ilab(:,:,3) = b;
 
-I1 = imfilter(sun,filterBank{1,1});
+Ifil = convolution(Ilab,filterBank{7,1},5,20);
+% Ifil = convolution(I,filterBank{1,1});
+image(Ifil)
+% image(L*a*b)
+% L
+% a
+% b
+% I1 = imfilter(sun,filterBank{1,1});
 
 % A = convmtx(h,n)
 end
