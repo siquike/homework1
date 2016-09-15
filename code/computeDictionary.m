@@ -1,9 +1,13 @@
- 
-% Does computation of the filter bank and dictionary, and saves
-% it in dictionary.mat 
+% Computes filter bank and dictionary, and saves it in dictionary.mat 
 
+function computeDictionary()
 
-load('../dat/traintest.mat'); 
-[filterBank,dictionary] = getFilterBankAndDictionary(strcat(['../dat/'],train_imagenames));
+	load('../dat/traintest.mat'); 
 
-save('dictionary.mat','filterBank','dictionary'); 
+	interval= 1;
+	train_imagenames = train_imagenames(1:interval:end);
+	[filterBank,dictionary] = getFilterBankAndDictionary(strcat(['../dat/'],train_imagenames));
+
+	save('dictionary.mat','filterBank','dictionary'); 
+
+end
