@@ -37,6 +37,7 @@ for i = 1:num_f
    filter_Response_m(:,:,:,i) = filter_Response(:,:,3*i-2:3*i);
 end
 
+figure(1)
 % Show Collage
 montage(filter_Response_m,'Size',[4 5])
 
@@ -49,19 +50,25 @@ fileNames = cell(1,1);
 % I1= gpuArray(imread(image_names{i}));
 % end
 
-fileFolder1 = dir(fullfile('dat','*'))
-fileFolder1 = {fileFolder1.name}'
-for i =1:length(fileFolder1)
-    dirOutput = dir(fullfile(fileFolder1{i,1},'*'));
-    temp = dirOutput.name;
-    fileNames = [fileNames; temp];
-end
+fileFolder1 = dir(fullfile('dat','*'));
+fileFolder1 = {fileFolder1.name}';
+checkvalid = strfind(fileFolder1,'.');
+checkvalid = find(cellfun(@isempty,checkvalid));
+fileFolder1 = fileFolder1(checkvalid);
+dirOutput = dir(fullfile('dat',fileFolder1{1,1}(1,:),'*.jpg'))
+dirOutput = {dirOutput.name}'
+
+% for i =1:length(fileFolder1)
+%     dirOutput = dir(fullfile(fileFolder1{i,1},'*'));
+%     temp = dirOutput.name;
+%     fileNames = [fileNames; temp];
+% end
 % 
 % [filterBank, dictionary] = getFilterBankAndDictionary(image_names);
 
 % Q1.2 General Initialization
-K = 3;
-alpha = 20;
+K = 200;
+alpha = 175;
 xidx = randperm(size(filter_Response,1),alpha);
 yidx = randperm(size(filter_Response,2),alpha);
 
@@ -70,12 +77,26 @@ for i =1:num_f
 sample(:,:,3*i-2:3*i) = filter_Response(xidx,yidx,3*i-2:3*i);
 end
 
+% Change 3D matrix to 4D
+for i = 1:num_f
+   sample_m(:,:,:,i) = sample(:,:,3*i-2:3*i);
+end
+
+figure(2)
+% Show Collage
+montage(sample_m,'Size',[4 5])
+
+
+
 % Reshaping for kmeans format
 sample = reshape(sample,[],3*num_f);
 
 % Implementation of kmeans
-[~, dictionary] = kmeans(filter_Response, K, 'EmptyAction','drop');
+[~, dictionary] = kmeans(sample, K, 'EmptyAction','drop');
 dictionary = dictionary';
+
+figure(3)
+image(dictionary)
 
 %% Q1.3
 
