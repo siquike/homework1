@@ -1,3 +1,7 @@
+%% =================================================================
+%------------------------------1.1----------------------------------
+%  =================================================================
+
 %% Q1.0
 
 % The higher resolution the filter, the more smoothness is applied
@@ -9,43 +13,69 @@
 % dy Scales: These filters provide horizontal edges
 %% Q1.1
 
+% Q1.1 General Initialization
+
+
+% Create filter bank
 filterBank = createFilterBank(); 
-% I1= imread('sun_aerinlrdodkqnypz.jpg');
+
+% Read Image
 I1= gpuArray(imread('sun_aadolwejqiytvyne.jpg'));
 
 filter_Response = extractFilterResponses(I1, filterBank);
 filter_Response = gather(filter_Response);
+
+% Local Initialization 1
 npx = size(filter_Response,1);
 npy = size(filter_Response,2);
 npz = 3*ones(1,20);
-% filter_Response = reshape(filter_Response,187500,60);
+num_f = length(filterBank);
+filter_Response_m = nan(npx,npy,3,num_f);
 
-for i = 1:length(filterBank)
+% Change 3D matrix to 4D
+for i = 1:num_f
    filter_Response_m(:,:,:,i) = filter_Response(:,:,3*i-2:3*i);
 end
 
+% Show Collage
 montage(filter_Response_m,'Size',[4 5])
 
+%% =================================================================
+%------------------------------1.2----------------------------------
+%  =================================================================
 %% Q1.2
-
-% montage(cell_filter_Response,'Parent',cell_filter_Response)
-% parfor i= 1:length(filterBank)
-%     cellnew{i,1} = filter_Response(:,:,3*i-2:3*i);
+fileNames = cell(1,1);
+% for i = 1:length(image_names)
+% I1= gpuArray(imread(image_names{i}));
 % end
-% parfor i:length(filterBank)
-%     filres = gather(filter_Response());
-% end
-% image(filter_Response(:,:,7:9))
 
-% K = 3;
-% alpha = 20;
-% xidx = randperm(size(filter_Response,1),alpha);
-% yidx = randperm(size(filter_Response,2),alpha);
-% sample = filter_Response(xidx,yidx);
+fileFolder1 = dir(fullfile('dat','*'))
+fileFolder1 = {fileFolder1.name}'
+for i =1:length(fileFolder1)
+    dirOutput = dir(fullfile(fileFolder1{i,1},'*'));
+    temp = dirOutput.name;
+    fileNames = [fileNames; temp];
+end
+% 
+% [filterBank, dictionary] = getFilterBankAndDictionary(image_names);
 
+% Q1.2 General Initialization
+K = 3;
+alpha = 20;
+xidx = randperm(size(filter_Response,1),alpha);
+yidx = randperm(size(filter_Response,2),alpha);
 
-% filter_Response = reshape(filter_Response,187500,60);
-% [idx, dictionary] = kmeans(filter_Response, K, 'EmptyAction','drop');
+% Sample part of image for less computation
+for i =1:num_f
+sample(:,:,3*i-2:3*i) = filter_Response(xidx,yidx,3*i-2:3*i);
+end
 
-% filter_Response = reshape(filter_Response,187500,60);
-% [idx, dictionary] = kmeans(filter_Response, K, 'EmptyAction','drop');
+% Reshaping for kmeans format
+sample = reshape(sample,[],3*num_f);
+
+% Implementation of kmeans
+[~, dictionary] = kmeans(filter_Response, K, 'EmptyAction','drop');
+dictionary = dictionary';
+
+%% Q1.3
+
