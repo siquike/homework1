@@ -11,10 +11,10 @@
 # General macros
 NVCC=nvcc
 MEX=mex
-CC=gcc
+CC=gcc-4.7
 MATLAB_ROOT=/usr/local/MATLAB/R2015a/
-CUDA_INC=/usr/local/cuda/include/cudcl
-CUDA_LIB=/usr/local/cuda/lib64/
+CUDA_INC=/usr/local/cuda-7.5/include/cudcl
+CUDA_LIB=/usr/local/cuda-7.5/lib64/
 
 FLG=-O4
 NVCC_OP=-Xcompiler -fPIC
