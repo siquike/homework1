@@ -24,11 +24,12 @@ fprintf('Starting a pool of workers with %d cores\n', numCores);
 parpool('local', numCores);
 
 %load the files and texton dictionary
-load('../dat/traintest.mat','all_imagenames','mapping');
+% load('../dat/traintest.mat','all_imagenames','mapping');
+load('/home/siquike/Documents/Classes/Computer Vision/homework1/dat/traintest.mat','all_imagenames','mapping');
 load('dictionary.mat','filterBank','dictionary');
 
-source = '../dat/';
-target = '../dat/'; 
+source = '/home/siquike/Documents/Classes/Computer Vision/homework1/dat/';
+target = '/home/siquike/Documents/Classes/Computer Vision/homework1/dat/'; 
 
 if ~exist(target,'dir')
     mkdir(target);

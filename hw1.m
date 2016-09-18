@@ -57,10 +57,12 @@ checkvalid = find(cellfun(@isempty,checkvalid));
 fileFolder1 = fileFolder1(checkvalid);
 for i = 1:length(fileFolder1)
 temp = dir(fullfile('dat',fileFolder1{i,1}(1,:),'*.jpg'));
-dirOutput{i,1} = {temp.name}';
+temp = {temp.name}';
+ntemp = length(temp);
+dirOutput = [dirOutput;temp];
 end
 
-[filterBank, dictionary] = getFilterBankAndDictionary(imPaths)
+[filterBank, dictionary] = getFilterBankAndDictionary(dirOutput)
 
 % for i =1:length(fileFolder1)
 %     dirOutput = dir(fullfile(fileFolder1{i,1},'*'));
@@ -102,5 +104,47 @@ dictionary = dictionary';
 figure(3)
 image(dictionary)
 
-%% Q1.3
+%% Q1.2 test
+
+imPaths = cell(2,1);
+% for i = 1:length(image_names)
+% I1= gpuArray(imread(image_names{i}));
+% end
+dirOutput = {};
+fileFolder1 = dir(fullfile('dat','*'));
+fileFolder1 = {fileFolder1.name}';
+checkvalid = strfind(fileFolder1,'.');
+checkvalid = find(cellfun(@isempty,checkvalid));
+fileFolder1 = fileFolder1(checkvalid);
+for i = 1:length(fileFolder1)
+temp = dir(fullfile('dat',fileFolder1{i,1}(1,:),'*.jpg'));
+temp = {temp.name}';
+ntemp = length(temp);
+dirOutput = [dirOutput;temp];
+end
+
+for i = 1:2
+imPaths{i,1} = dirOutput{1:2,1};
+end
+
+[filterBank, dictionary] = getFilterBankAndDictionary(imPaths)
+
+%%
+
+computeDictionary()
+
+%% 1.3
+imagesc(dictionary')
+%%
+
+load('dictionary.mat')
+dictionary = dictionary';
+I= imread('sun_aadolwejqiytvyne.jpg');
+
+[wordMap] = getVisualWords(I, filterBank, dictionary);
+
+% batchToVisualWords(4)
+
+
+
 

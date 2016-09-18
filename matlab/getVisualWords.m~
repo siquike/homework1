@@ -13,7 +13,6 @@ filter_Response = extractFilterResponses(img, filterBank);
 
 nrow = size(filter_Response,1);
 ncol = size(filter_Response,2);
-idx = [1 1];
 [xidx,yidx] = ind2sub([nrow ncol],idx);
     zidx = ones(alpha,1);
 

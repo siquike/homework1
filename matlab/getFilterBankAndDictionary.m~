@@ -13,21 +13,21 @@ filterBank  = createFilterBank();
 
 T = length(imPaths);
 F = length(filterBank);
-alpha = 150;
+alpha = 175;
 K = 200;
 
 % filter_Responses = zeros(alpha*T,3*F);
 filter_Responses = [];
+samples = [];
 
 for i = 1:T
     % Read Image
     I1= gpuArray(imread(imPaths{i}));
 
     filter_Response = extractFilterResponses(I1, filterBank);
-    nrow = size(filter_Response,1);
-    ncol = size(filter_Response,2);
-    idx = randperm(nrow*ncol,alpha)';
-    [xidx,yidx] = ind2sub([nrow ncol],idx);
+
+    xidx = randperm(size(filter_Response,1),alpha)';
+    yidx = randperm(size(filter_Response,2),alpha)';
     zidx = ones(alpha,1);
 
     % Sample part of image for less computation
@@ -36,11 +36,11 @@ for i = 1:T
     idx2 = sub2ind(size(filter_Response), xidx, yidx, (3*j-1)*zidx);
     idx3 = sub2ind(size(filter_Response), xidx, yidx, 3*j*zidx);
 %     filter_Responses(1:alpha,3*j-2:3*j) = [filter_Response(idx1) filter_Response(idx2) filter_Response(idx3)];
-    filter_Responses = [filter_Responses filter_Response(idx1) filter_Response(idx2) filter_Response(idx3)];
+    samples = [samples filter_Response(idx1) filter_Response(idx2) filter_Response(idx3)];
     end
 
-% sample = gather(sample);
-% sample = reshape(sample,[],3*F);
+%     sample = gather(sample);
+%     sample = reshape(sample,[],3*F);
 %     
 %     size(sample,1)
 %     size(sample,2)
@@ -52,8 +52,7 @@ end
 
 filter_Responses = gather(filter_Responses);
 
-filter_Responses = reshape(filter_Responses,[],3*F);
-% size(filter_Responses);
+size(filter_Responses)
 
 % Reshaping for kmeans format
 % filter_Responses = reshape(filter_Responses,[],3*F);

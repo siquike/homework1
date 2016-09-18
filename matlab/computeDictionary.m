@@ -2,11 +2,13 @@
 
 function computeDictionary()
 
-	load('../dat/traintest.mat'); 
+% 	load('../dat/traintest.mat'); 
+    load('/home/siquike/Documents/Classes/Computer Vision/homework1/dat/traintest.mat'); 
 
 	interval= 1;
 	train_imagenames = train_imagenames(1:interval:end);
-	[filterBank,dictionary] = getFilterBankAndDictionary(strcat(['../dat/'],train_imagenames));
+% 	[filterBank,dictionary] = getFilterBankAndDictionary(strcat(['../dat/'],train_imagenames));
+    [filterBank,dictionary] = getFilterBankAndDictionary(strcat(['/home/siquike/Documents/Classes/Computer Vision/homework1/dat/'],train_imagenames));
 
 	save('dictionary.mat','filterBank','dictionary'); 
 

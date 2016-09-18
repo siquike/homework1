@@ -49,15 +49,18 @@ fileNames = cell(1,1);
 % for i = 1:length(image_names)
 % I1= gpuArray(imread(image_names{i}));
 % end
-
+dirOutput = {};
 fileFolder1 = dir(fullfile('dat','*'));
 fileFolder1 = {fileFolder1.name}';
 checkvalid = strfind(fileFolder1,'.');
 checkvalid = find(cellfun(@isempty,checkvalid));
 fileFolder1 = fileFolder1(checkvalid);
 for i = 1:length(fileFolder1)
-dirOutput = dir(fullfile('dat',fileFolder1{i,1}(1,:),'*.jpg'));
-dirOutput = {dirOutput; {dirOutput.name}'};
+temp = dir(fullfile('dat',fileFolder1{i,1}(1,:),'*.jpg'));
+temp = {temp.name}';
+ntemp = length(temp);
+% ntempcurrent = length(temp.name);
+dirOutput = temp{:,1};
 end
 
 [filterBank, dictionary] = getFilterBankAndDictionary(imPaths)
