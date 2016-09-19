@@ -9,32 +9,50 @@ function [wordMap] = getVisualWords(img, filterBank, dictionary)
 
     % TODO Implement your code here
 
-filter_Response = extractFilterResponses(img, filterBank);
+    
+%% Visual Words on Filter Response    
 
-nrow = size(filter_Response,1);
-ncol = size(filter_Response,2);
-idx = [1 1];
+% filter_Response = extractFilterResponses(img, filterBank);
+% 
+% nrow = size(filter_Response,1);
+% ncol = size(filter_Response,2);
+% idx = 1:nrow*ncol;
+% [xidx,yidx] = ind2sub([nrow ncol],idx);
+% 
+% lfil = (1:3*size(filterBank,1))';
+% 
+% for i = 1:nrow*ncol
+%     temp = permute(filter_Response(xidx(i),yidx(i),:),[2 3 1]);
+%     [~, indeces] = pdist2(dictionary,temp,'euclidean','Smallest',60);
+%     ldind = sub2ind(size(dictionary), indeces, lfil);
+%     wordMap(xidx(i),yidx(i),:) = dictionary(ldind);
+% end
+
+%% Visual Words on actual Image
+
+% filter_Response = extractFilterResponses(img, filterBank);
+n = size(filterBank,1);
+
+img = double(img);
+if(size(img,3) == 1)
+    img = repmat(img,1,1,3);
+end	
+% img = repmat(img,1,1,n);
+nrow = size(img,1);
+ncol = size(img,2);
+idx = 1:nrow*ncol;
 [xidx,yidx] = ind2sub([nrow ncol],idx);
-    zidx = ones(alpha,1);
+lfil = (1:3)';
 
-    % Sample part of image for less computation
-    for j =1:F
-    idx1 = sub2ind(size(filter_Response), xidx, yidx, (3*j-2)*zidx);
-    idx2 = sub2ind(size(filter_Response), xidx, yidx, (3*j-1)*zidx);
-    idx3 = sub2ind(size(filter_Response), xidx, yidx, 3*j*zidx);
-    filter_Responses = [filter_Responses filter_Response(idx1) filter_Response(idx2) filter_Response(idx3)];
+for j = 1:n
+    for i = 1:nrow*ncol
+        subdic = dictionary(:,3*j-2:3*j);
+        temp = permute(img(xidx(i),yidx(i),:),[2 3 1]);
+        [~, indeces] = pdist2(subdic,temp,'euclidean','Smallest',3);
+        ldind = sub2ind(size(subdic), indeces, lfil);
+        wordMap(xidx(i),yidx(i),3*j-2:3*j) = subdic(ldind);
     end
-
-for i = 1:length()
-p1(:,:) = filter_Response(1,1,:);
-p1 = p1';
-
-% [D, wordmap] = pdist2(p1,dictionary,'Smallest');
-[D, wordMap] = pdist2(dictionary,p1,'euclidean','Smallest',60);
 end
 
-% D
-% 
-% I
 
 end

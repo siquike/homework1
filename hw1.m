@@ -139,12 +139,32 @@ imagesc(dictionary')
 
 load('dictionary.mat')
 dictionary = dictionary';
-I= imread('sun_aadolwejqiytvyne.jpg');
+I= imread('sun_aadsmjtmardsqqro.jpg');
 
 [wordMap] = getVisualWords(I, filterBank, dictionary);
 
 % batchToVisualWords(4)
 
+%%
 
+num_f = length(filterBank);
+% Change 3D matrix to 4D
+for i = 1:num_f
+   wordMap_m(:,:,:,i) = wordMap(:,:,3*i-2:3*i);
+end
 
+figure
+% Show Collage
+montage(wordMap_m,'Size',[4 5])
 
+%%
+figure
+% norm = wordMap./sum(wordMap(:));
+h = histogram(wordMap_m,'Normalization','probability');
+% assert(numel(h) == dictionarySize);
+
+%% Q2.2
+layerNum = 3;
+dictionarySize = size(dictionary,1);
+
+[h] = getImageFeaturesSPM(layerNum, wordMap, dictionarySize)
