@@ -38,12 +38,12 @@ for i = 1:T
 % %     filter_Responses(1:alpha,3*j-2:3*j) = [filter_Response(idx1) filter_Response(idx2) filter_Response(idx3)];
 %     filter_Responses = [filter_Responses filter_Response(idx1) filter_Response(idx2) filter_Response(idx3)];
 %     end
-    for j = 1:length(yidx)
-        for k =1:length(xidx)
+    for j = 1:ncol
+        for k =1:nrow
             sample(k,j,:) = filter_Response(xidx(k),yidx(j),:); 
         end
     end
-    filter_Responses = [filter_Responses; sample];
+    filter_Responses = [filter_Response
 
 % sample = gather(sample);
 % sample = reshape(sample,[],3*F);

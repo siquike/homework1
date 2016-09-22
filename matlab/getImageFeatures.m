@@ -7,6 +7,8 @@ function [h] = getImageFeatures(wordMap, dictionarySize)
 %   h: vector of histogram of visual words of size dictionarySize (l1-normalized, ie. sum(h(:)) == 1)
 
 	% TODO Implement your code here
-h = histogram(wordMap_m,'Normalization','probability');
+% h = histcounts(wordMap(:),dictionarySize, 'Normalization', 'probability');
+[h,~] = histcounts(wordMap,1:dictionarySize+1, 'Normalization', 'probability');
+% h = h/sum(abs(h.data));
 assert(numel(h) == dictionarySize);
 end

@@ -20,7 +20,7 @@
 filterBank = createFilterBank(); 
 
 % Read Image
-I1= gpuArray(imread('sun_aadolwejqiytvyne.jpg'));
+I1= gpuArray(imread('labelme_aqpunnqmctisquh.jpg'));
 
 filter_Response = extractFilterResponses(I1, filterBank);
 filter_Response = gather(filter_Response);
@@ -139,32 +139,67 @@ imagesc(dictionary')
 
 load('dictionary.mat')
 dictionary = dictionary';
-I= imread('sun_aadsmjtmardsqqro.jpg');
+I= imread('labelme_aqpunnqmctisquh.jpg');
 
 [wordMap] = getVisualWords(I, filterBank, dictionary);
 
 % batchToVisualWords(4)
 
 %%
-
-num_f = length(filterBank);
-% Change 3D matrix to 4D
-for i = 1:num_f
-   wordMap_m(:,:,:,i) = wordMap(:,:,3*i-2:3*i);
-end
-
 figure
-% Show Collage
-montage(wordMap_m,'Size',[4 5])
+imagesc(wordMap)
+%%
+
+% num_f = length(filterBank);
+% % Change 3D matrix to 4D
+% for i = 1:num_f
+%    wordMap_m(:,:,:,i) = wordMap(:,:,3*i-2:3*i);
+% end
+% 
+% figure
+% % Show Collage
+% montage(wordMap_m,'Size',[4 5])
 
 %%
-figure
-% norm = wordMap./sum(wordMap(:));
-h = histogram(wordMap_m,'Normalization','probability');
-% assert(numel(h) == dictionarySize);
+% figure
+% % norm = wordMap(:)./sum(wordMap(:));
+% h1 = hist(wordMap(:),200);
+% h1 = h1/sum(abs(h1));
+% % h = histogram(wordMap_m,'Normalization','probability');
+% % assert(numel(h) == dictionarySize);
 
+% [h] = getImageFeatures(wordMap, 200);
 %% Q2.2
 layerNum = 3;
 dictionarySize = size(dictionary,1);
 
 [h] = getImageFeaturesSPM(layerNum, wordMap, dictionarySize)
+
+
+%% Test of spm
+
+h = size(wordMap,1)
+w = size(wordMap,2)
+layerNum = 3;
+L = layerNum-1;
+
+addh = ceil(h/2^L)*2^L-h
+addw = ceil(w/2^L)*2^L-w
+
+extrah = nan(addh,w);
+extraw = nan(h+addh,addw);
+
+wordMap1 = cat(1,wordMap,extrah);
+wordMap1 = cat(2,wordMap1,extraw);
+
+newh = (h + addh)/2^L;
+neww = (w + addw)/2^L;
+
+hrep = repmat(newh,2^L,1);
+wrep = repmat(neww,2^L,1);
+
+C = mat2cell(wordMap1,hrep,wrep);
+
+%%
+
+[h] = getImageFeaturesSPM(3, wordMap, 100)
