@@ -19,8 +19,8 @@ function guessedImage = guessImage( imagename )
 	guessedImage = mapping{train_labels(nnI)};
 	fprintf('[My Guess]:%s.\n',guessedImage);
 
-	figure(1);
-	imshow(image);
-	title('image to classify')
+% 	figure(1);
+% 	imshow(image);
+% 	title('image to classify')
 
 end

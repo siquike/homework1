@@ -18,6 +18,7 @@ K = 150;
 
 % filter_Responses = zeros(alpha*T,3*F);
 filter_Responses = [];
+sample = nan(length(xidx),length(yidx),F*3);
 
 for i = 1:T
     % Read Image
@@ -29,7 +30,6 @@ for i = 1:T
     ncol = size(filter_Response,2);
     idx = randperm(nrow*ncol,alpha)';
     [xidx,yidx] = ind2sub([nrow ncol],idx);
-    sample = nan(length(xidx),length(yidx),F*3);
 %     zidx = ones(alpha,1);
 
     % Sample part of image for less computation
@@ -45,6 +45,7 @@ for i = 1:T
             sample(k,j,:) = filter_Response(xidx(k),yidx(j),:); 
         end
     end
+    clear sample
     filter_Responses = [filter_Responses; sample];
 
 % sample = gather(sample);

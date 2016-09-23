@@ -10,7 +10,7 @@ ltest = length(test_imagenames);
 
 for i = 1:ltest
     guessedImage{i} = guessImage(test_imagenames{i});
-    test_labels
+    assigned_labels = mapping{guessedImage(nnI)};
 
 end
 

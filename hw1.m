@@ -235,3 +235,26 @@ end
 %%
 
 guessedImage = guessImage('labelme_cbahlipqcrjpbuc.jpg') 
+
+%%
+	load('vision.mat');
+	load('/home/siquike/Documents/Classes/Computer Vision/homework1/dat/traintest.mat');
+
+	% TODO Implement your code here
+    
+ltest = length(test_imagenames);
+
+for i = 1:ltest
+    guessedImages{i,1} = guessImage(test_imagenames{i});
+    assigned_labels{i,1} = cell(mapping{test_labels(:)});
+end
+
+for i = 1:ltest
+    assigned_labels{i,1} = mapping{test_labels(i)};
+end
+
+for i = 1:ltest
+    comp(i,1) = strcmp(guessedImages{i,1},assigned_labels{i,1});
+end
+
+accuracy = sum(double(comp))/ltest*100;
