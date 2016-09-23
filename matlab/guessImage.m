@@ -5,15 +5,16 @@ function guessedImage = guessImage( imagename )
 
 	fprintf('[Loading..]\n');
 	load('vision.mat');
-	load('../dat/traintest.mat','mapping');
+	load('/home/siquike/Documents/Classes/Computer Vision/homework1/dat/traintest.mat','mapping');
 
 	image = im2double(imread(imagename));
 
 	% imshow(image);
 	fprintf('[Getting Visual Words..]\n');
-	wordMap = getVisualWords(image, filterBank, dictionary);
-	h = getImageFeaturesSPM(3, wordMap, size(dictionary,2));
-	distances = distanceToSet(h, train_features);
+	wordMap = getVisualWords(image, filterBank, dictionary');
+%     size(dictionary,1)
+	h = getImageFeaturesSPM(3, wordMap, size(dictionary,1));
+	distances = distanceToSet(h', train_features);
 	[~,nnI] = max(distances);
 	guessedImage = mapping{train_labels(nnI)};
 	fprintf('[My Guess]:%s.\n',guessedImage);

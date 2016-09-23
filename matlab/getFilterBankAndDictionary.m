@@ -13,15 +13,16 @@ filterBank  = createFilterBank();
 
 T = length(imPaths);
 F = length(filterBank);
-alpha = 200;
-K = 300;
+alpha = 100;
+K = 200;
 
 % filter_Responses = zeros(alpha*T,3*F);
 filter_Responses = [];
 
 for i = 1:T
     % Read Image
-    I1= gpuArray(imread(imPaths{i}));
+%     I1= gpuArray(imread(imPaths{i}));
+    I1= imread(imPaths{i});
 
     filter_Response = extractFilterResponses(I1, filterBank);
     nrow = size(filter_Response,1);
@@ -56,7 +57,7 @@ for i = 1:T
 %     filter_Responses(i*alpha-alpha+1:i*alpha,:) = sample;
 end
 
-filter_Responses = gather(filter_Responses);
+% filter_Responses = gather(filter_Responses);
 
 filter_Responses = reshape(filter_Responses,[],3*F);
 % size(filter_Responses);

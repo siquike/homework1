@@ -203,3 +203,35 @@ C = mat2cell(wordMap1,hrep,wrep);
 %%
 
 [h] = getImageFeaturesSPM(3, wordMap, 100)
+
+%%
+A = [1 2 3 4 5 6 7 8 9 10]';
+B = [.9 1.9 2.9 3.9 4.9 5.9 6.9 7.9 8.9 9.9;4 3 2 1 2 3 4 5 6 7; 8 5 6 4 7 3 2 1 4 5]';
+
+histInter = distanceToSet(A, B)
+
+%%
+
+buildRecognitionSystem()
+
+%%
+
+load('dictionary.mat');
+	load('/home/siquike/Documents/Classes/Computer Vision/homework1/dat/traintest.mat');
+
+	% TODO create train_features
+dictionary = dictionary';
+l = length(train_imagenames);
+dictionarySize = size(dictionary,1);
+layerNum = 3;
+histograms = nan(dictionarySize*(4^layerNum-1)/3,l);
+for i = 1:l
+    train_imagenames{i} = strrep(train_imagenames{i},'.jpg','.mat');
+    wordMap = load(train_imagenames{i});
+    wordMap = wordMap.wordMap;
+    histograms(:,i) = getImageFeaturesSPM(layerNum, wordMap, dictionarySize);
+end
+
+%%
+
+guessedImage = guessImage('labelme_cbahlipqcrjpbuc.jpg') 

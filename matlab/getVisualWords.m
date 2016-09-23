@@ -12,6 +12,8 @@ function [wordMap] = getVisualWords(img, filterBank, dictionary)
     
 %% Visual Words on Filter Response    
 
+dictionary = dictionary';
+
 filter_Response = extractFilterResponses(img, filterBank);
 
 nrow = size(filter_Response,1);
@@ -20,6 +22,8 @@ nd = size(filter_Response,3);
 filter_Response = reshape(filter_Response,1,[],60);
 filter_Response = permute(filter_Response,[2 3 1]);
 % newsize = size(filter_Response,1);
+% ndic=size(dictionary)
+% nfr =size(filter_Response)
 [D,I] = pdist2(dictionary,filter_Response,'euclidean','Smallest',1);
 % [~,I]=min(d,[],1);
 wordMap = reshape(I,nrow,ncol);
